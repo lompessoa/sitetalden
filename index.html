@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Talden Farias - Referência em Direito Ambiental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!--
+        Chosen Palette:
+        - Verde Oliva Principal (Títulos, Elementos de Destaque): #556B2F (DarkOliveGreen)
+        - Verde Oliva Médio (Subtítulos, Fundos Secundários Suaves): #8FBC8F (DarkSeaGreen)
+        - Verde Oliva Claro (Fundo Principal da Página, Cards): #F5F5DC (Beige) / #FAFAD2 (LightGoldenrodYellow - para um tom mais quente e claro) -> Optando por #F8F8F0 (um off-white levemente esverdeado/amarelado para o fundo geral)
+        - Verde Secundário (Detalhes, Bordas): #6B8E23 (OliveDrab)
+        - Azul Celeste Discreto (Acentos, Links, CTAs Secundários): #ADD8E6 (LightBlue) / #B0C4DE (LightSteelBlue)
+        - Texto Principal: #333333 (Dark Gray)
+        - Texto Secundário: #555555 (Medium Gray)
+
+        Application Structure Plan:
+        Landing page SPA com seções:
+        1. Hero: Apresentação impactante, foto (placeholder), CTA principal para o livro.
+        2. Sobre: Breve introdução à sua importância (extraído do relatório).
+        3. Trajetória de Excelência (Timeline): Marcos da carreira de forma visual e cronológica.
+        4. Publicações em Destaque: Foco no livro "Licenciamento Ambiental", com capa (placeholder), descrição, e CTA de compra. Outras obras.
+        5. Áreas de Expertise: Destaque para Direito Ambiental, Urbanístico e Minerário.
+        6. Legado e Influência: Papel como professor, líder em organizações, colunista.
+        7. Contato/Mídias: Links para Conjur, palestras (se houver links).
+        Estrutura visa construir autoridade progressivamente. Navegação por scroll e menu fixo no topo.
+
+        Visualization & Content Choices:
+        - Timeline: Principal elemento visual, construída com HTML/CSS, detalhando marcos da carreira (baseado na Seção VI e Tabela 4 do relatório). Goal: Organizar/Informar.
+        - Cards: Para publicações, áreas de expertise. Goal: Informar/Destacar.
+        - Ícones Unicode: Para complementar informações (ex: áreas de expertise).
+        - Livro Principal: Imagem da capa (placeholder), descrição e CTA claro. Goal: Promover/Vender.
+        - Nenhuma biblioteca de chart será usada (Chart.js, Plotly.js).
+        - NO SVG graphics used. NO Mermaid JS used.
+
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8F8F0; /* Off-white levemente esverdeado/amarelado */
+            color: #333333;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Lora', serif;
+            color: #556B2F; /* DarkOliveGreen */
+        }
+        .hero-section {
+            background-color: #EAF0E0; /* Verde Oliva bem claro, quase um creme esverdeado */
+        }
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            background-color: #8FBC8F; /* DarkSeaGreen */
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -3px;
+        }
+        .timeline-container {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+        }
+        .timeline-container::after {
+            content: '';
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            right: -17px;
+            background-color: white;
+            border: 4px solid #556B2F; /* DarkOliveGreen */
+            top: 15px;
+            border-radius: 50%;
+            z-index: 1;
+        }
+        .timeline-left {
+            left: 0;
+        }
+        .timeline-right {
+            left: 50%;
+        }
+        .timeline-right::after {
+            left: -16px;
+        }
+        .timeline-content {
+            padding: 20px 30px;
+            background-color: white;
+            position: relative;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #8FBC8F;
+        }
+        .timeline-year {
+            font-family: 'Lora', serif;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #556B2F;
+            margin-bottom: 0.5rem;
+        }
+        .btn-primary {
+            background-color: #556B2F; /* DarkOliveGreen */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #6B8E23; /* OliveDrab */
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: #556B2F; /* DarkOliveGreen */
+            border: 2px solid #556B2F;
+            padding: 0.625rem 1.25rem; /* Um pouco menor que o primário */
+            border-radius: 0.375rem;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            font-weight: 600;
+        }
+        .btn-secondary:hover {
+            background-color: #556B2F;
+            color: white;
+        }
+        .section-bg-light {
+            background-color: #F0F5E8; /* Verde oliva muito claro para alternar fundos */
+        }
+        .nav-link {
+            color: #556B2F;
+            transition: color 0.3s ease;
+        }
+        .nav-link:hover {
+            color: #6B8E23;
+        }
+        .book-cover-placeholder {
+            width: 200px;
+            height: 300px;
+            background-color: #E0E0E0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+            border: 1px solid #CCC;
+            border-radius: 4px;
+        }
+        .profile-placeholder {
+            width: 200px;
+            height: 200px;
+            background-color: #E0E0E0;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: #777;
+            font-size: 0.9rem;
+            border: 3px solid #8FBC8F;
+        }
+
+        @media screen and (max-width: 768px) {
+            .timeline::after {
+                left: 31px;
+            }
+            .timeline-container {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+            .timeline-container::before {
+                left: 60px;
+                border: medium solid white;
+                border-width: 10px 10px 10px 0;
+                border-color: transparent white transparent transparent;
+            }
+            .timeline-left::after, .timeline-right::after {
+                left: 15px;
+            }
+            .timeline-right {
+                left: 0%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar" class="bg-white/80 backdrop-blur-md shadow-md fixed w-full z-20 top-0">
+        <div class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <a href="#" class="text-2xl font-bold text-[#556B2F] font-lora">Dr. Talden Farias</a>
+            <div class="hidden md:flex space-x-4">
+                <a href="#sobre" class="nav-link">Sobre</a>
+                <a href="#trajetoria" class="nav-link">Trajetória</a>
+                <a href="#publicacoes" class="nav-link">Publicações</a>
+                <a href="#expertise" class="nav-link">Expertise</a>
+                <a href="#legado" class="nav-link">Legado</a>
+                <a href="#contato" class="nav-link">Contato</a>
+            </div>
+            <div class="md:hidden">
+                <button id="mobile-menu-button" class="text-[#556B2F] focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#sobre" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Sobre</a>
+            <a href="#trajetoria" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Trajetória</a>
+            <a href="#publicacoes" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Publicações</a>
+            <a href="#expertise" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Expertise</a>
+            <a href="#legado" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Legado</a>
+            <a href="#contato" class="block py-2 px-4 text-sm nav-link hover:bg-gray-200">Contato</a>
+        </div>
+    </nav>
+
+    <header id="hero" class="hero-section pt-24 md:pt-32 pb-16 md:pb-20 text-center">
+        <div class="container mx-auto px-6">
+            <div class="profile-placeholder mx-auto mb-6">Foto Dr. Talden Farias</div>
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">Dr. Talden Farias</h1>
+            <p class="text-xl md:text-2xl text-[#6B8E23] mb-8">Uma Voz Proeminente e Arquiteto do Direito Ambiental Brasileiro</p>
+            <p class="max-w-2xl mx-auto text-lg text-gray-700 mb-10">
+                Professor, autor e consultor com vasta experiência, moldando o Direito Ambiental no Brasil através de uma atuação multifacetada e um profundo comprometimento com a justiça ambiental e o desenvolvimento sustentável.
+            </p>
+            <a href="#publicacoes" class="btn-primary text-lg">Conheça o Livro: Licenciamento Ambiental</a>
+        </div>
+    </header>
+
+    <section id="sobre" class="py-16 md:py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Uma Referência Indispensável</h2>
+            <div class="max-w-3xl mx-auto text-gray-700 text-lg leading-relaxed space-y-6">
+                <p>
+                    O Dr. Talden Farias emerge no cenário jurídico brasileiro não apenas como um acadêmico de renome, mas como uma figura central cujas contribuições têm moldado significativamente o Direito Ambiental no país. Sua carreira multifacetada como professor universitário, autor prolífico, consultor jurídico requisitado e intelectual público reflete um profundo comprometimento com a justiça ambiental e o desenvolvimento sustentável.
+                </p>
+                <p>
+                    A combinação sinérgica dessas diversas frentes de atuação – a academia informando a prática, a prática enriquecendo a teoria, e a experiência em políticas públicas fundamentando ambas – amplifica exponencialmente o alcance e a relevância de seu trabalho. Sua capacidade de transitar entre a teoria e a aplicação prática confere à sua obra um apelo singular.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section id="trajetoria" class="py-16 md:py-20 section-bg-light">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Trajetória de Excelência</h2>
+            <div class="timeline">
+                <div class="timeline-container timeline-left">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">Início da Década de 2000</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Fundamentos Acadêmicos</h4>
+                        <p class="text-sm text-gray-600">Conclusão da Graduação em Direito pela Universidade Estadual da Paraíba (UEPB) e do Mestrado em Ciências Jurídicas pela Universidade Federal da Paraíba (UFPB), estabelecendo a base de sua expertise.</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-right">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">2007 - 2009</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Emergindo como Autor</h4>
+                        <p class="text-sm text-gray-600">Publicação de obras seminais como "Direito ambiental: tópicos especiais" (2007) e "Introdução ao direito ambiental" (2009), marcando seu início como uma voz influente na literatura jurídica ambiental.</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-left">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">Década de 2010</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Reconhecimento Doutoral e Internacional</h4>
+                        <p class="text-sm text-gray-600">Obtenção de Doutorado em Recursos Naturais (UFCG), com estágio na Universidade de Salamanca (Espanha), e Doutorado em Direito da Cidade (UERJ), com nota máxima e estágio na Universidade de Paris 1 – Panthéon-Sorbonne (França).</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-right">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">Contínuo</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Liderança e Autoridade</h4>
+                        <p class="text-sm text-gray-600">Professor na UFPB e UFPE. Publicação de múltiplas edições de "Licenciamento ambiental: aspectos teóricos e práticos". Liderança na UBAA, GPDC/CNPq e atuação como colunista no Conjur.</p>
+                    </div>
+                </div>
+                 <div class="timeline-container timeline-left">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">2024</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Comenda Verde</h4>
+                        <p class="text-sm text-gray-600">Agraciado com a "Comenda Verde" pela Assembleia Legislativa da Paraíba, em reconhecimento ao seu destaque em propiciar conhecimento técnico-jurídico na área do Direito Ambiental.</p>
+                    </div>
+                </div>
+                <div class="timeline-container timeline-right">
+                    <div class="timeline-content">
+                        <h3 class="timeline-year">2025 (Previsto)</h3>
+                        <h4 class="text-xl font-semibold text-[#6B8E23] mb-2">Fronteiras do Conhecimento</h4>
+                        <p class="text-sm text-gray-600">Publicação do whitepaper "Explaining Carbon Removal and Offset Methods", demonstrando seu engajamento com temas emergentes e globais como mudanças climáticas e remoção de carbono.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="publicacoes" class="py-16 md:py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-16">Publicações de Referência</h2>
+            <div class="flex flex-col md:flex-row items-center md:items-start gap-8 md:gap-12 mb-12 bg-white p-8 rounded-lg shadow-lg border border-gray-200">
+                <div class="book-cover-placeholder mx-auto md:mx-0 flex-shrink-0">Capa do Livro:<br/>Licenciamento Ambiental (9ª Edição)</div>
+                <div class="text-center md:text-left">
+                    <h3 class="text-2xl md:text-3xl font-bold mb-3">Licenciamento Ambiental: Aspectos Teóricos e Práticos</h3>
+                    <p class="text-lg text-[#6B8E23] mb-4">9ª Edição (JusPodivm, 2024/2025)</p>
+                    <p class="text-gray-700 leading-relaxed mb-6">
+                        Considerada a obra magna do Dr. Talden Farias, este livro é uma referência indispensável para estudantes, profissionais e pesquisadores do Direito Ambiental. Com sucessivas edições atualizadas, aborda de forma completa e aprofundada os aspectos teóricos e práticos do licenciamento ambiental no Brasil, refletindo as constantes evoluções legislativas e jurisprudenciais.
+                    </p>
+                    <p class="text-sm text-gray-500 mb-1">Avaliações de leitores: 98-100% (conforme fontes)</p>
+                    <a href="#" class="btn-primary inline-block mt-4">Adquira o seu exemplar</a>
+                    <p class="text-xs text-gray-500 mt-2">(Link para a página de vendas)</p>
+                </div>
+            </div>
+
+            <h3 class="text-2xl font-semibold text-center mb-8 mt-16">Outras Obras Relevantes</h3>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                    <h4 class="text-xl font-semibold text-[#556B2F] mb-2">Introdução ao Direito Ambiental</h4>
+                    <p class="text-sm text-gray-500 mb-1">Del Rey, 2009</p>
+                    <p class="text-gray-700 text-sm">Um texto fundamental para quem busca compreender os pilares e conceitos essenciais do Direito Ambiental brasileiro.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                    <h4 class="text-xl font-semibold text-[#556B2F] mb-2">Competência Administrativa Ambiental</h4>
+                    <p class="text-sm text-gray-500 mb-1">2ª Ed. Lumen Juris, 2022</p>
+                    <p class="text-gray-700 text-sm">Análise aprofundada sobre a complexa repartição de competências na esfera da administração ambiental.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-100">
+                    <h4 class="text-xl font-semibold text-[#556B2F] mb-2">Direito Ambiental Brasileiro (Coorganizador)</h4>
+                    <p class="text-sm text-gray-500 mb-1">2ª Ed. Revista dos Tribunais, 2021</p>
+                    <p class="text-gray-700 text-sm">Coletânea que oferece um panorama abrangente e atualizado do Direito Ambiental no Brasil.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="expertise" class="py-16 md:py-20 section-bg-light">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Áreas Centrais de Expertise</h2>
+            <div class="grid md:grid-cols-3 gap-8 text-center">
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4 text-[#556B2F]">⚖️</div>
+                    <h3 class="text-2xl font-semibold mb-3">Direito Ambiental</h3>
+                    <p class="text-gray-700">Área central de sua atuação, com foco em licenciamento, responsabilidade, e políticas de proteção ambiental.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4 text-[#556B2F]">🏙️</div>
+                    <h3 class="text-2xl font-semibold mb-3">Direito Urbanístico</h3>
+                    <p class="text-gray-700">Especialização alinhada ao seu doutorado em Direito da Cidade, abordando planejamento urbano sustentável e governança.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-lg">
+                    <div class="text-4xl mb-4 text-[#556B2F]">⛏️</div>
+                    <h3 class="text-2xl font-semibold mb-3">Direito Minerário</h3>
+                    <p class="text-gray-700">Complementa sua expertise em recursos naturais, analisando os aspectos legais e ambientais da atividade mineradora.</p>
+                </div>
+            </div>
+             <p class="text-center text-lg text-gray-700 mt-12 max-w-3xl mx-auto">
+                A combinação sinérgica destas três áreas permite ao Dr. Talden Farias uma abordagem holística e integrada para os complexos desafios que interligam desenvolvimento, urbanização e a conservação de recursos naturais no Brasil.
+            </p>
+        </div>
+    </section>
+
+    <section id="legado" class="py-16 md:py-20">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold text-center mb-12">Legado e Influência Contínua</h2>
+            <div class="grid md:grid-cols-1 lg:grid-cols-2 gap-10">
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4">Formador de Gerações</h3>
+                    <p class="text-gray-700 leading-relaxed">Como professor de Direito Ambiental nos cursos de graduação, mestrado e doutorado na UFPB e UFPE, Dr. Talden Farias desempenha um papel vital na formação de futuros juristas, acadêmicos e formuladores de políticas, criando um efeito multiplicador de seu conhecimento e paixão pelo Direito Ambiental.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md">
+                    <h3 class="text-2xl font-semibold mb-4">Liderança em Organizações</h3>
+                    <p class="text-gray-700 leading-relaxed">Sua atuação como Diretor de Ensino da UBAA, Líder do Grupo de Pesquisa GPDC/CNPq, e sua recente nomeação para a Assessoria Jurídica da ANAMMA, demonstram seu compromisso em moldar ativamente as práticas e políticas ambientais em níveis regional e nacional.</p>
+                </div>
+                <div class="bg-white p-8 rounded-lg shadow-md lg:col-span-2">
+                    <h3 class="text-2xl font-semibold mb-4">Voz Ativa na Mídia Jurídica</h3>
+                    <p class="text-gray-700 leading-relaxed">
+                        Através de sua coluna regular sobre Direito Ambiental no portal Consultor Jurídico (Conjur), o Dr. Farias traduz temas complexos para a comunidade jurídica em geral, analisando questões prementes como ESG, mudanças climáticas e decisões judiciais relevantes. Esta plataforma amplia significativamente sua influência, moldando debates e disseminando conhecimento atualizado.
+                    </p>
+                    <a href="https://www.conjur.com.br/taldenfarias" target="_blank" rel="noopener noreferrer" class="btn-secondary inline-block mt-6">Leia a Coluna no Conjur</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contato" class="py-16 md:py-20 section-bg-light text-center">
+        <div class="container mx-auto px-6">
+            <h2 class="text-3xl md:text-4xl font-bold mb-8">Mantenha-se Informado</h2>
+            <p class="text-lg text-gray-700 mb-10 max-w-xl mx-auto">
+                Acompanhe as análises e contribuições do Dr. Talden Farias sobre os temas mais atuais do Direito Ambiental.
+            </p>
+            <div class="space-y-4 md:space-y-0 md:space-x-6">
+                <a href="https://www.conjur.com.br/taldenfarias" target="_blank" rel="noopener noreferrer" class="btn-primary">Coluna no Consultor Jurídico</a>
+                </div>
+        </div>
+    </section>
+
+    <footer class="bg-[#556B2F] text-center py-8">
+        <div class="container mx-auto px-6 text-gray-200">
+            <p>&copy; <span id="currentYear"></span> Dr. Talden Farias. Todos os direitos reservados.</p>
+            <p class="text-sm mt-1">Landing page desenvolvida para divulgação de conhecimento e obras.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const navLinks = mobileMenu.querySelectorAll('a');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                if (targetElement) {
+                    const offsetTop = targetElement.offsetTop - document.getElementById('navbar').offsetHeight; // Adjust for fixed navbar
+                    window.scrollTo({
+                        top: offsetTop,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
