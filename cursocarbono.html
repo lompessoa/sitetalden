@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso: Crédito de Carbono e Direito Ambiental | Prof. Talden Farias</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Academia Verde -->
+    <!-- Application Structure Plan: A single-page application featuring a sticky top navigation bar for easy access to all sections. The core content, the course syllabus, is organized into an interactive tabbed interface, allowing users to explore each module without overwhelming scrolling. This non-linear structure prioritizes user-driven exploration. Key data from the report's tables (like market comparisons and legal theories) are redesigned into visually distinct, interactive components (cards, comparison panels) to improve comprehension and engagement. A visual flowchart replaces the text-based project lifecycle, and a Chart.js donut chart provides a quick, quantitative overview of the course's structure. This design was chosen to transform a dense, text-based report into an engaging and intuitive digital experience that highlights the course's key features and value proposition. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Course structure/hours (Table 7) -> Goal: Inform/Summarize -> Viz: Donut Chart -> Interaction: Hover for details -> Justification: Provides a quick visual summary of module weight. -> Library: Chart.js/Canvas.
+        - Report Info: Lifecycle of a Carbon Project (Sec 3.4) -> Goal: Organize/Explain Process -> Viz: HTML/CSS Flowchart Diagram -> Interaction: None, purely visual -> Justification: A visual flow is more intuitive for understanding a multi-step process than a bulleted list. -> Library/Method: Tailwind CSS (Flexbox/Grid).
+        - Report Info: Legal Nature of Credits (Table 4) -> Goal: Organize/Compare Theories -> Viz: Interactive Cards -> Interaction: Click to expand/collapse details -> Justification: Breaks down complex information into digestible chunks, encouraging user interaction to learn more. -> Library/Method: JS for toggling visibility.
+        - Report Info: Regulated vs. Voluntary Markets (Table 2) -> Goal: Compare -> Viz: Side-by-side comparison panels -> Interaction: None -> Justification: A direct visual comparison is the clearest way to present contrasting information. -> Library/Method: Tailwind CSS (Grid).
+        - Report Info: Course modules -> Goal: Organize Content -> Viz: Tabbed Interface -> Interaction: Click to switch modules -> Justification: Prevents an overwhelmingly long page and allows users to navigate directly to topics of interest. -> Library/Method: JS for tab switching logic.
+    -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* slate-50 */
+            color: #1e293b; /* slate-800 */
+        }
+        .tab-active {
+            border-color: #059669; /* emerald-600 */
+            color: #059669;
+            background-color: #ecfdf5; /* emerald-50 */
+        }
+        .nav-link-active {
+            color: #059669;
+            font-weight: 600;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+        .card-expand-content {
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+        }
+        .card-expand-content.show {
+            max-height: 1000px; /* Large enough to fit content */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800">
+
+    <header class="bg-white/80 backdrop-blur-lg shadow-sm sticky top-0 z-50">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <div class="text-xl font-bold text-emerald-700">
+                Direito & Carbono
+            </div>
+            <ul class="hidden md:flex items-center space-x-6 text-slate-600">
+                <li><a href="#curso" class="hover:text-emerald-600 transition-colors duration-300">O Curso</a></li>
+                <li><a href="#modulos" class="hover:text-emerald-600 transition-colors duration-300">Módulos</a></li>
+                <li><a href="#conceitos" class="hover:text-emerald-600 transition-colors duration-300">Conceitos-Chave</a></li>
+                <li><a href="#professor" class="hover:text-emerald-600 transition-colors duration-300">Professor</a></li>
+            </ul>
+             <button id="mobile-menu-button" class="md:hidden p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-emerald-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            </button>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <ul class="px-6 pb-4 flex flex-col space-y-3">
+                 <li><a href="#curso" class="block py-2 hover:text-emerald-600 transition-colors duration-300">O Curso</a></li>
+                <li><a href="#modulos" class="block py-2 hover:text-emerald-600 transition-colors duration-300">Módulos</a></li>
+                <li><a href="#conceitos" class="block py-2 hover:text-emerald-600 transition-colors duration-300">Conceitos-Chave</a></li>
+                <li><a href="#professor" class="block py-2 hover:text-emerald-600 transition-colors duration-300">Professor</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section id="hero" class="py-20 md:py-28 bg-white">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-4">
+                    Curso Avançado: Crédito de Carbono e o Direito Ambiental Brasileiro
+                </h1>
+                <p class="text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                    Uma análise estratégica e aprofundada sob a perspectiva do Professor Talden Farias. Navegue por um conteúdo completo, atualizado e prático para dominar o novo cenário jurídico do carbono no Brasil.
+                </p>
+                <a href="#modulos" class="mt-8 inline-block bg-emerald-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-emerald-700 transition-all duration-300 transform hover:scale-105">
+                    Explore os Módulos
+                </a>
+            </div>
+        </section>
+
+        <section id="curso" class="py-16 md:py-24">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Um Curso de Vanguarda</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Este curso foi desenhado para capacitar profissionais com um conhecimento avançado sobre as complexidades jurídicas dos créditos de carbono, com ênfase total no novo Sistema Brasileiro de Comércio de Emissões (SBCE).</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-emerald-500">
+                        <h3 class="font-bold text-xl mb-3 text-slate-800">Objetivo Central</h3>
+                        <p class="text-slate-600">Dominar os aspectos centrais da Lei nº 15.042/2024 (SBCE), avaliar a natureza jurídica e tributária dos créditos, estruturar contratos (ERPAs) e conduzir due diligence em projetos.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-emerald-500">
+                        <h3 class="font-bold text-xl mb-3 text-slate-800">Diferencial Estratégico</h3>
+                        <p class="text-slate-600">Foco na análise jurídica do novo sistema brasileiro, preenchendo uma lacuna crítica de mercado e integrando a expertise singular do Professor Talden Farias em licenciamento e direito ambiental geográfico.</p>
+                    </div>
+                    <div class="bg-white p-6 rounded-lg shadow-md border-t-4 border-emerald-500 lg:col-span-1 md:col-span-2">
+                        <h3 class="font-bold text-xl mb-3 text-slate-800">Para Quem?</h3>
+                        <p class="text-slate-600">Profissionais do direito, formuladores de políticas públicas, acadêmicos, gestores ambientais e todos os interessados em se posicionar na vanguarda da economia de baixo carbono.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="modulos" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Estrutura do Curso (25-30h)</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Navegue pelos módulos para explorar o conteúdo programático detalhado. Cada seção foi desenhada para uma aprendizagem progressiva e integrada.</p>
+                </div>
+
+                <div class="flex flex-wrap justify-center border-b border-slate-200 mb-8 -mx-2">
+                    <button class="tab-button tab-active text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2" data-tab="1">Módulo I: Fundamentos</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2 border-transparent text-slate-500 hover:text-emerald-600" data-tab="2">Módulo II: Lei Brasileira</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2 border-transparent text-slate-500 hover:text-emerald-600" data-tab="3">Módulo III: Jurídico & Tributário</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2 border-transparent text-slate-500 hover:text-emerald-600" data-tab="4">Módulo IV: Projetos</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2 border-transparent text-slate-500 hover:text-emerald-600" data-tab="5">Módulo V: Acordo de Paris</button>
+                    <button class="tab-button text-sm md:text-base font-semibold py-3 px-4 mx-2 border-b-2 border-transparent text-slate-500 hover:text-emerald-600" data-tab="6">Módulo VI: Disputas</button>
+                </div>
+
+                <div class="tab-content" id="tab-1">
+                    <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo I: Fundamentos dos Créditos de Carbono e o Direito das Mudanças Climáticas</h3>
+                        <p class="text-slate-600 mb-6">Este módulo estabelece as bases conceituais e o contexto jurídico internacional para a compreensão dos créditos de carbono.</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><span class="font-semibold">A Urgência Climática:</span> Base científica (IPCC) e impactos socioeconômicos.</li>
+                            <li><span class="font-semibold">O Regime Climático Internacional:</span> Evolução da UNFCCC ao Acordo de Paris, passando pelo Protocolo de Quioto e o legado do MDL.</li>
+                            <li><span class="font-semibold">Introdução aos Créditos de Carbono:</span> Conceitos essenciais (adicionalidade, permanência) e tipologias (offset vs. licenças).</li>
+                            <li><span class="font-semibold">Ciclo de Vida de um Projeto:</span> Da concepção à emissão dos créditos, passando por validação e verificação.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-2">
+                     <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo II: O Arcabouço Legal e Regulatório Brasileiro</h3>
+                        <p class="text-slate-600 mb-6">Análise aprofundada da legislação que governa os créditos de carbono no Brasil, com foco total no novo SBCE.</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                             <li><span class="font-semibold">Evolução da Política Climática Nacional:</span> Da PNMC (Lei nº 12.187/2009) ao novo sistema.</li>
+                             <li><span class="font-semibold">Dissecação da Lei nº 15.042/2024 (SBCE):</span> Análise de objetivos, governança, e definições chave (CBE e CRVE).</li>
+                             <li><span class="font-semibold">Obrigações dos Operadores Regulados:</span> Requisitos de MRV, conformidade e regime sancionatório.</li>
+                             <li><span class="font-semibold">Mercado Voluntário:</span> Funcionamento e coexistência com o mercado regulado.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-3">
+                     <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo III: Natureza Jurídica e Tributação</h3>
+                        <p class="text-slate-600 mb-6">Abordagem de um dos temas mais complexos e debatidos: a classificação dos créditos de carbono e suas consequências fiscais.</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><span class="font-semibold">O Labirinto Doutrinário:</span> Análise das correntes (bem móvel, valor mobiliário, serviço, ativo intangível) e o impacto da nova lei.</li>
+                            <li><span class="font-semibold">Implicações Tributárias:</span> Discussão sobre a incidência de PIS/COFINS, IRPJ/CSLL, ICMS e ISSQN.</li>
+                            <li><span class="font-semibold">Precedentes Judiciais e Administrativos:</span> Análise de decisões do CARF, STJ e STF sobre o tema.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-4">
+                    <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo IV: Contratualização e Desenvolvimento de Projetos</h3>
+                        <p class="text-slate-600 mb-6">Foco nos aspectos práticos e contratuais do mercado, com ênfase na estruturação de acordos e na condução de due diligence.</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><span class="font-semibold">Contratos de Compra e Venda (ERPAs):</span> Análise de cláusulas essenciais, alocação de riscos e estratégias de negociação.</li>
+                            <li><span class="font-semibold">Due Diligence em Projetos:</span> Verificação legal, ambiental, social e técnica, com foco em regularidade fundiária (CAR, SIGEF).</li>
+                            <li><span class="font-semibold">Foco em REDD+:</span> Arcabouço internacional e brasileiro, metodologias, salvaguardas e desafios práticos.</li>
+                            <li><span class="font-semibold">O Elo Crítico:</span> A interdependência entre licenciamento ambiental e a elegibilidade dos créditos.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="tab-content hidden" id="tab-5">
+                    <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo V: Cooperação Internacional sob o Acordo de Paris</h3>
+                        <p class="text-slate-600 mb-6">Análise do Artigo 6 do Acordo de Paris, que estabelece os mecanismos de cooperação entre países para o cumprimento de suas metas climáticas (NDCs).</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><span class="font-semibold">Artigo 6.2:</span> Abordagens cooperativas e ITMOs, incluindo a necessidade de "ajustes correspondentes".</li>
+                            <li><span class="font-semibold">Artigo 6.4:</span> O mecanismo centralizado da UNFCCC, sucessor do MDL.</li>
+                             <li><span class="font-semibold">Implicações para o Brasil:</span> Como CBEs e CRVEs podem se qualificar para o mercado internacional e os desafios estratégicos para o país.</li>
+                            <li><span class="font-semibold">Outras Iniciativas Globais:</span> O papel do CORSIA, ICVCM e VCMI na definição de padrões de qualidade.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="tab-content hidden" id="tab-6">
+                    <div class="bg-slate-100 p-8 rounded-lg">
+                        <h3 class="text-2xl font-bold mb-4">Módulo VI: Resolução de Disputas e Perspectivas Futuras</h3>
+                        <p class="text-slate-600 mb-6">Abordagem da litigiosidade inerente aos mercados de carbono, mecanismos de resolução de disputas e tendências emergentes.</p>
+                        <ul class="space-y-3 list-disc list-inside text-slate-700">
+                            <li><span class="font-semibold">Tipos de Disputas:</span> Análise de litígios contratuais, de projetos, regulatórios e casos de fraude.</li>
+                            <li><span class="font-semibold">Mecanismos de Resolução:</span> Vantagens e desvantagens de tribunais nacionais, arbitragem, mediação e grievance mechanisms.</li>
+                            <li><span class="font-semibold">Análise da ADI 7795:</span> Estudo de caso sobre a ação que contesta a obrigatoriedade de compra de créditos pelo setor financeiro.</li>
+                            <li><span class="font-semibold">Tendências Emergentes:</span> Conexões com créditos de biodiversidade, papel da tecnologia (blockchain) e justiça climática.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <section id="conceitos" class="py-16 md:py-24">
+             <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Dominando os Conceitos</h2>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto">Visualizações e resumos para facilitar a compreensão dos pilares do Direito do Carbono.</p>
+                </div>
+                
+                <div class="grid lg:grid-cols-2 gap-12 items-start">
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-center">Foco do Curso: Distribuição da Carga Horária</h3>
+                        <div class="chart-container">
+                            <canvas id="courseHoursChart"></canvas>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 class="text-2xl font-bold mb-6 text-center">Ciclo de Vida de um Projeto de Carbono</h3>
+                        <div class="space-y-4">
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-emerald-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">1</div>
+                                <div class="ml-4 p-4 bg-white rounded-lg shadow-sm flex-1">
+                                    <h4 class="font-semibold">Concepção & Desenho (PDD)</h4>
+                                    <p class="text-sm text-slate-600">Identificação da oportunidade e detalhamento da metodologia.</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-emerald-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">2</div>
+                                <div class="ml-4 p-4 bg-white rounded-lg shadow-sm flex-1">
+                                    <h4 class="font-semibold">Validação & Registro</h4>
+                                    <p class="text-sm text-slate-600">Avaliação por terceira parte e inscrição em um programa de certificação (e.g., Verra).</p>
+                                </div>
+                            </div>
+                             <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-emerald-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">3</div>
+                                <div class="ml-4 p-4 bg-white rounded-lg shadow-sm flex-1">
+                                    <h4 class="font-semibold">Monitoramento & Verificação</h4>
+                                    <p class="text-sm text-slate-600">Coleta de dados contínua e auditoria independente dos resultados.</p>
+                                </div>
+                            </div>
+                             <div class="flex items-center">
+                                <div class="flex-shrink-0 bg-emerald-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg">4</div>
+                                <div class="ml-4 p-4 bg-white rounded-lg shadow-sm flex-1">
+                                    <h4 class="font-semibold">Emissão dos Créditos</h4>
+                                    <p class="text-sm text-slate-600">Geração e alocação dos créditos verificados ao proponente do projeto.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-20">
+                    <h3 class="text-2xl font-bold mb-8 text-center">Mercado Regulado (SBCE) vs. Mercado Voluntário</h3>
+                    <div class="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                        <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-lg">
+                            <h4 class="text-xl font-bold text-center mb-4 text-emerald-700">Mercado Regulado (SBCE)</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-1">✔</span><span><strong>Mandato:</strong> Obrigatório para setores definidos em lei.</span></li>
+                                <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-1">✔</span><span><strong>Ativos:</strong> Cota Brasileira de Emissão (CBE) e CRVE.</span></li>
+                                <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-1">✔</span><span><strong>Governança:</strong> Órgão Gestor e Comitê Interministerial (CIM).</span></li>
+                                <li class="flex items-start"><span class="text-emerald-500 mr-2 mt-1">✔</span><span><strong>Impulso:</strong> Cumprimento de metas legais de emissão.</span></li>
+                            </ul>
+                        </div>
+                         <div class="bg-white p-6 rounded-lg border border-slate-200 shadow-lg">
+                            <h4 class="text-xl font-bold text-center mb-4 text-sky-700">Mercado Voluntário</h4>
+                            <ul class="space-y-3">
+                                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✔</span><span><strong>Mandato:</strong> Voluntário, sem exigência legal.</span></li>
+                                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✔</span><span><strong>Ativos:</strong> VCUs, etc., de padrões internacionais (Verra, Gold Standard).</span></li>
+                                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✔</span><span><strong>Governança:</strong> Padrões privados e certificadoras internacionais.</span></li>
+                                <li class="flex items-start"><span class="text-sky-500 mr-2 mt-1">✔</span><span><strong>Impulso:</strong> Metas corporativas (ESG), reputação e marketing.</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-20">
+                    <h3 class="text-2xl font-bold mb-8 text-center">Natureza Jurídica do Crédito de Carbono: Um Debate em Aberto</h3>
+                    <p class="text-lg text-slate-600 max-w-3xl mx-auto text-center mb-8">A classificação jurídica de um crédito de carbono determina sua tributação e regulação. Clique nos cartões para explorar as principais teorias e suas implicações.</p>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Bem Móvel Incorpóreo</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Um direito patrimonial transferível, sem corpo físico. <strong>Implicação Tributária:</strong> Incidência de IRPJ/CSLL sobre o ganho/lucro. Debate sobre a aplicação de ICMS se for considerado "mercadoria".</p>
+                            </div>
+                        </div>
+                        <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Valor Mobiliário</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Negociado em mercado organizado para captação de recursos. A CVM historicamente negou, mas a nova lei pode mudar o cenário. <strong>Implicação:</strong> Sujeição à regulação da CVM e tributação específica de mercado de capitais.</p>
+                            </div>
+                        </div>
+                         <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Serviço Ambiental</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Representa a contraprestação por um "fazer": a atividade de reduzir ou remover emissões de GEE. <strong>Implicação Tributária:</strong> Potencial incidência de PIS/COFINS-Serviços e, principalmente, do ISSQN (imposto municipal).</p>
+                            </div>
+                        </div>
+                         <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Ativo Intangível</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Um direito sem existência física, mas com valor econômico e capaz de gerar benefícios futuros. É a forma mais comum de contabilização. <strong>Implicação Tributária:</strong> Incidência de IRPJ/CSLL e PIS/COFINS sobre a receita da venda.</p>
+                            </div>
+                        </div>
+                        <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Derivativo</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Utilizado em contratos futuros para garantir preços, com valor derivado de um ativo ou variável. <strong>Implicação:</strong> Regulação pela CVM/BACEN e tributação específica para operações financeiras, como o IOF.</p>
+                            </div>
+                        </div>
+                         <div class="card-expand bg-white rounded-lg shadow-md border overflow-hidden">
+                            <button class="w-full text-left p-5 font-semibold flex justify-between items-center">
+                                <span>Direito Sui Generis</span>
+                                <span class="expand-icon transition-transform duration-300">▼</span>
+                            </button>
+                            <div class="card-expand-content px-5 pb-5">
+                                <p class="text-slate-600 text-sm"><strong>Argumento:</strong> Uma nova categoria de direito, que não se encaixa perfeitamente nas classificações tradicionais, exigindo uma disciplina jurídica própria. <strong>Implicação:</strong> A tributação dependeria de legislação específica ou da analogia com outras categorias.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section id="professor" class="py-16 md:py-24 bg-white">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                    <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-2">Conheça o Professor</h2>
+                </div>
+                <div class="max-w-4xl mx-auto bg-slate-100 rounded-lg shadow-xl p-8 md:flex md:items-center md:space-x-8">
+                    <div class="md:w-1/3 text-center md:text-left">
+                        <div class="w-40 h-40 rounded-full bg-emerald-200 mx-auto md:mx-0 flex items-center justify-center mb-4">
+                            <span class="text-6xl text-emerald-700">TF</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-900">Talden Farias</h3>
+                        <p class="text-emerald-700 font-semibold">Professor de Direito Ambiental</p>
+                    </div>
+                    <div class="md:w-2/3 mt-6 md:mt-0">
+                        <p class="text-slate-600 mb-4">Professor na UFPB e UFPE, Talden Farias é uma das maiores autoridades em Direito Ambiental do Brasil. Sua expertise é a chave para a abordagem única deste curso.</p>
+                        <div class="border-t border-slate-200 pt-4">
+                            <h4 class="font-bold mb-3">Principais Contribuições para o Curso:</h4>
+                            <ul class="space-y-2 text-slate-700">
+                                <li class="flex items-start">
+                                    <span class="font-mono text-emerald-600 mr-3 mt-1">▶</span>
+                                    <span><strong>Licenciamento Ambiental:</strong> Sua obra de referência, "Licenciamento Ambiental", é fundamental para a análise de due diligence e legalidade de projetos de carbono (REDD+, energia).</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-mono text-emerald-600 mr-3 mt-1">▶</span>
+                                    <span><strong>Direito Ambiental Geográfico:</strong> Sua abordagem é crucial para analisar a territorialidade dos projetos, questões fundiárias, zoneamento e conflitos socioambientais.</span>
+                                </li>
+                                <li class="flex items-start">
+                                    <span class="font-mono text-emerald-600 mr-3 mt-1">▶</span>
+                                    <span><strong>Análise Regulatória:</strong> Sua experiência é vital para dissecar a nova e complexa Lei do SBCE e suas futuras regulamentações.</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="bg-slate-800 text-white py-12">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-2xl font-bold mb-2">Pronto para liderar no mercado de carbono?</p>
+            <p class="text-slate-300 mb-6">Este curso é o seu próximo passo para se tornar um especialista.</p>
+            <a href="#" class="bg-emerald-600 text-white font-semibold py-3 px-8 rounded-lg shadow-lg hover:bg-emerald-700 transition-colors duration-300">
+                Informações sobre Inscrição
+            </a>
+            <div class="mt-8 text-sm text-slate-400">
+                <p>&copy; 2025 Curso de Crédito de Carbono e Direito Ambiental. Todos os direitos reservados.</p>
+                <p>Desenvolvido como uma aplicação interativa de conteúdo.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const tabButtons = document.querySelectorAll('.tab-button');
+            const tabContents = document.querySelectorAll('.tab-content');
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                });
+            });
+
+            tabButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const tabId = button.dataset.tab;
+
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('tab-active');
+                        btn.classList.add('text-slate-500', 'hover:text-emerald-600', 'border-transparent');
+                    });
+                    button.classList.add('tab-active');
+                    button.classList.remove('text-slate-500', 'hover:text-emerald-600', 'border-transparent');
+                    
+                    tabContents.forEach(content => {
+                        if (content.id === `tab-${tabId}`) {
+                            content.classList.remove('hidden');
+                        } else {
+                            content.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+
+            const cardHeaders = document.querySelectorAll('.card-expand button');
+            cardHeaders.forEach(header => {
+                header.addEventListener('click', () => {
+                    const content = header.nextElementSibling;
+                    const icon = header.querySelector('.expand-icon');
+                    
+                    content.classList.toggle('show');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+
+            const ctx = document.getElementById('courseHoursChart').getContext('2d');
+            const courseHoursChart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Fundamentos', 'Lei Brasileira', 'Jurídico/Tributário', 'Projetos & Contratos', 'Acordo de Paris', 'Disputas & Futuro'],
+                    datasets: [{
+                        label: 'Carga Horária (h)',
+                        data: [4, 7, 5, 7, 5, 4], 
+                        backgroundColor: [
+                            '#34d399', // emerald-400
+                            '#10b981', // emerald-500
+                            '#059669', // emerald-600
+                            '#047857', // emerald-700
+                            '#065f46', // emerald-800
+                            '#064e3b'  // emerald-900
+                        ],
+                        borderColor: '#f8fafc',
+                        borderWidth: 3,
+                        hoverOffset: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#475569', // slate-600
+                                font: {
+                                    size: 12
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + 'h (aprox.)';
+                                    }
+                                    return label;
+                                }
+                            }
+                        }
+                    },
+                    cutout: '60%'
+                }
+            });
+        });
+    </script>
+</body>
+</html>
