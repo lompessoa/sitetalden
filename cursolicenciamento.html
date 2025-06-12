@@ -1,214 +1,169 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-br" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Curso: Licenciamento Ambiental Avançado (Completo) - Prof. Dr. Talden Farias</title>
+    <title>Curso Avançado em Licenciamento Ambiental - Prof. Dr. Talden Farias</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <!-- Chosen Palette: Scholarly Neutral -->
-    <!-- Application Structure Plan: An expanded, thematic, dashboard-style SPA for a 30-hour course. The structure is modular to allow non-linear exploration. Key sections added: 'Competência', 'Responsabilidade', and 'Tópicos Especiais'. Existing modules are deepened with sub-topics. 'O Processo' is an interactive flowchart. 'A 'Nova' Lei' is a comparative dashboard with a chart. 'Jurisprudência' is an interactive timeline. This enhanced structure provides comprehensive coverage suitable for an advanced course, making dense legal information digestible through interactive components. -->
-    <!-- Visualization & Content Choices: Report Info: Expanded course syllabus. Goal: Make complex legal content accessible and in-depth. Viz/Presentation: 1. Licensing Process -> Interactive HTML/CSS flowchart (click to expand). 2. PL 2.159/2021 -> Comparative layout and Chart.js Bar Chart. 3. Jurisprudence -> Interactive HTML/CSS timeline. 4. New Modules (Competência, Responsabilidade) -> Structured text and card layouts for clarity. Justification: This multi-faceted approach transforms static text into engaging, explorable tools, facilitating a deep understanding of the subject matter. Library: Chart.js. Method: Vanilla JS. -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Scholarly Earth -->
+    <!-- Application Structure Plan: A single-page application designed as a premium course landing page. The structure is thematic and non-linear, guiding the user from awareness to conversion. It starts with a Hero section (value proposition), followed by a section on the Professor (building authority), an interactive curriculum (core content exploration), a visual analysis of the new legislation (addressing a key pain point), a jurisprudential timeline (demonstrating up-to-date content), course details (transparency), and a final Call to Action. This structure is designed to be more engaging and informative than a static document, allowing users to explore the course's depth at their own pace. -->
+    <!-- Visualization & Content Choices: Report Info: Entire course syllabus, professor's profile, legislative analysis. Goal: Translate dense academic content into an engaging, digestible format. 1. Curriculum -> Interactive Accordion: Organizes the 4 modules and extensive topics neatly. 2. PL 2.159/2021 Analysis -> Chart.js Bar Chart & Comparative Cards: The chart visually contrasts key principles (e.g., 'Controle Prévio' vs. 'Celeridade Proposta') for immediate impact, while cards detail specific controversies. This makes a complex topic accessible. 3. Jurisprudence -> Interactive Vertical Timeline: Presents key court decisions in a chronological, clickable format, making legal history explorable. Justification: These choices use interactivity to simplify complexity, enhance user engagement, and highlight the course's value proposition. Library/Method: Chart.js, Vanilla JS. -->
     <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #FDFBF7;
-            color: #343434;
-        }
-        .nav-link {
-            transition: all 0.3s ease;
-            border-bottom: 2px solid transparent;
-            padding-bottom: 4px;
-        }
-        .nav-link.active, .nav-link:hover {
-            color: #0D4740;
-            border-bottom-color: #0D4740;
-        }
-        .card {
-            background-color: #FFFFFF;
-            border: 1px solid #EAEAEA;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-        .btn-primary {
-            background-color: #0D4740;
-            color: #FFFFFF;
-            transition: background-color 0.3s ease;
-        }
-        .btn-primary:hover {
-            background-color: #09322D;
-        }
-        .chart-container {
-            position: relative;
-            width: 100%;
-            max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            height: 400px;
-            max-height: 50vh;
-        }
-        .timeline-item, .process-step {
-            cursor: pointer;
-        }
-        .timeline-content, .process-details {
-            display: none;
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.7s ease-in-out, padding 0.5s ease, margin 0.5s ease;
-        }
-        .timeline-content.open, .process-details.open {
-            display: block;
-        }
-        .section-title {
-            text-align: center;
-            margin-bottom: 0.5rem;
-            font-size: 1.875rem;
-            line-height: 2.25rem;
-            font-weight: 700;
-        }
-        .section-subtitle {
-            text-align: center;
-            color: #4A5568;
-            margin-bottom: 3rem;
-            max-width: 48rem;
-            margin-left: auto;
-            margin-right: auto;
-        }
+        body { font-family: 'Inter', sans-serif; background-color: #F8F6F2; color: #1E293B; }
+        .nav-link { transition: all 0.3s ease; border-bottom: 2px solid transparent; }
+        .nav-link.active, .nav-link:hover { color: #2563EB; border-bottom-color: #2563EB; }
+        .card { background-color: #FFFFFF; border: 1px solid #E2E8F0; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05); }
+        .btn-primary { background-color: #1D4ED8; color: #FFFFFF; transition: background-color 0.3s ease; }
+        .btn-primary:hover { background-color: #1E40AF; }
+        .section-title { font-size: 2.25rem; font-weight: 800; line-height: 2.5rem; text-align: center; }
+        .section-subtitle { margin-top: 1rem; text-align: center; color: #475569; max-width: 42rem; margin-left: auto; margin-right: auto; font-size: 1.125rem; }
+        .module-header { cursor: pointer; }
+        .module-content { max-height: 0; overflow: hidden; transition: max-height 0.7s ease-in-out; }
+        .chart-container { position: relative; width: 100%; max-width: 800px; margin-left: auto; margin-right: auto; height: 400px; max-height: 50vh; }
+        .timeline-item { cursor: pointer; }
+        .timeline-content { max-height: 0; overflow: hidden; transition: max-height 0.5s ease-out; }
     </style>
 </head>
 <body class="antialiased">
 
     <header class="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
-            <div class="text-xl font-bold text-[#0D4740]">
-                Licenciamento Avançado
-            </div>
-            <div class="hidden lg:flex items-center space-x-6 text-sm">
-                <a href="#fundamentos" class="nav-link active">Fundamentos</a>
-                <a href="#competencia" class="nav-link">Competência</a>
-                <a href="#processo" class="nav-link">Processo</a>
-                <a href="#nova-lei" class="nav-link">'Nova' Lei</a>
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="text-xl font-bold text-blue-800">Licenciamento Avançado</div>
+            <div class="hidden lg:flex items-center space-x-8 text-sm font-medium">
+                <a href="#professor" class="nav-link">O Professor</a>
+                <a href="#curriculo" class="nav-link">Currículo</a>
+                <a href="#nova-lei" class="nav-link">Nova Lei</a>
                 <a href="#jurisprudencia" class="nav-link">Jurisprudência</a>
-                <a href="#responsabilidade" class="nav-link">Responsabilidade</a>
-                <a href="#especiais" class="nav-link">Tópicos Especiais</a>
+                <a href="#inscricao" class="btn-primary font-bold py-2 px-4 rounded-lg">Inscreva-se</a>
             </div>
-            <button id="mobile-menu-button" class="lg:hidden focus:outline-none">
-                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+            <button id="mobile-menu-button" class="lg:hidden text-slate-700 focus:outline-none">
+                 <span class="w-6 h-6 block">&#9776;</span>
             </button>
         </nav>
         <div id="mobile-menu" class="hidden lg:hidden px-6 pt-2 pb-4 space-y-2">
-            <a href="#fundamentos" class="block nav-link active">Fundamentos</a>
-            <a href="#competencia" class="block nav-link">Competência</a>
-            <a href="#processo" class="block nav-link">Processo</a>
-            <a href="#nova-lei" class="block nav-link">'Nova' Lei</a>
+            <a href="#professor" class="block nav-link">O Professor</a>
+            <a href="#curriculo" class="block nav-link">Currículo</a>
+            <a href="#nova-lei" class="block nav-link">Nova Lei</a>
             <a href="#jurisprudencia" class="block nav-link">Jurisprudência</a>
-            <a href="#responsabilidade" class="block nav-link">Responsabilidade</a>
-            <a href="#especiais" class="block nav-link">Tópicos Especiais</a>
             <a href="#inscricao" class="block btn-primary font-bold py-2 px-4 rounded-lg text-center mt-2">Inscreva-se</a>
         </div>
     </header>
 
-    <main class="container mx-auto px-6 py-12">
-
-        <section id="hero" class="text-center mb-20">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Licenciamento Ambiental Avançado</h1>
-            <h2 class="text-xl md:text-2xl text-[#B49B5E] mb-6">Teoria, Prática e as Novas Fronteiras Legislativas</h2>
-            <p class="max-w-3xl mx-auto text-lg text-gray-700">
-                Uma imersão completa e atualizada de 30 horas no regime jurídico do licenciamento, sob a expertise do <span class="font-bold text-[#0D4740]">Prof. Dr. Talden Farias</span>, um dos maiores especialistas do país.
-            </p>
-        </section>
-
-        <section id="fundamentos" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 1: Fundamentos e Teoria Geral</h3>
-            <p class="section-subtitle">A base conceitual e principiológica que sustenta todo o sistema de licenciamento ambiental no Brasil.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Art. 225 da CF/88</h4>
-                    <p>O direito-dever fundamental ao meio ambiente ecologicamente equilibrado como matriz do licenciamento.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Política Nacional (Lei 6.938/81)</h4>
-                    <p>O licenciamento como instrumento da PNMA e a aplicação dos princípios da prevenção, precaução e poluidor-pagador.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Natureza Jurídica da Licença</h4>
-                    <p>A tese do Prof. Talden sobre a análise da discricionariedade técnica no caso concreto, superando dogmas.</p>
-                </div>
-                 <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Obrigatoriedade do Licenciamento</h4>
-                    <p>Análise do art. 10 da Lei 6.938/81 e Resoluções CONAMA. Quem está sujeito ao licenciamento?</p>
-                </div>
+    <main>
+        <section id="hero" class="py-20 bg-slate-50">
+            <div class="container mx-auto px-6 text-center">
+                <h1 class="text-4xl md:text-6xl font-extrabold text-slate-900 leading-tight">
+                    Curso Avançado em Licenciamento Ambiental
+                </h1>
+                <p class="mt-4 text-lg md:text-xl text-slate-600 max-w-3xl mx-auto">
+                    Domine a teoria, a prática e as novas fronteiras legislativas com o Prof. Dr. Talden Farias, referência nacional na área.
+                </p>
+                <a href="#inscricao" class="mt-8 inline-block btn-primary font-bold py-4 px-10 rounded-lg text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition">
+                    Garanta sua vaga
+                </a>
             </div>
         </section>
 
-        <section id="competencia" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 2: Competência para Licenciar</h3>
-            <p class="section-subtitle">Análise aprofundada da Lei Complementar nº 140/2011 e a repartição de atribuições entre União, Estados e Municípios.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Tipologias e Critérios</h4>
-                    <p>Estudo dos critérios de abrangência do impacto (local, regional, nacional) para definição da competência licenciatória.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Atuação Supletiva e Subsidiária</h4>
-                    <p>Diferenças e hipóteses de atuação entre os entes federativos, garantindo a efetividade do licenciamento.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Conflitos de Competência</h4>
-                    <p>Análise de casos práticos e soluções jurídicas para os frequentes conflitos de atribuição no licenciamento.</p>
+        <section id="professor" class="py-24">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-slate-900">Conheça o Professor</h2>
+                <p class="section-subtitle">Aprenda com quem é uma das maiores autoridades em Direito Ambiental do Brasil.</p>
+                <div class="mt-12 max-w-4xl mx-auto grid md:grid-cols-5 gap-8 items-center">
+                    <div class="md:col-span-2">
+                         <div class="w-full aspect-square bg-slate-200 rounded-lg flex items-center justify-center">
+                            <span class="text-slate-500 text-sm">(Foto do Professor)</span>
+                        </div>
+                    </div>
+                    <div class="md:col-span-3">
+                        <h3 class="text-2xl font-bold text-blue-800">Prof. Dr. Talden Farias</h3>
+                        <p class="mt-4 text-slate-600">
+                            Com uma trajetória acadêmica de excelência, que inclui múltiplos doutorados – em Recursos Naturais (UFCG/Univ. de Salamanca) e em Direito da Cidade (UERJ/Univ. de Paris 1 - Sorbonne) – e Pós-Doutorado (UERJ), o Professor Farias alia profundo conhecimento teórico a uma vasta experiência prática.
+                        </p>
+                        <p class="mt-3 text-slate-600">
+                            Autor de obras de referência como "Licenciamento Ambiental: Aspectos Teóricos e Práticos" e "Competência Administrativa Ambiental", sua voz é ativa e influente nos debates que moldam o futuro da legislação ambiental no país.
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
-
-        <section id="processo" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 3: O Processo de Licenciamento</h3>
-            <p class="section-subtitle">Navegue pelas fases, modalidades e estudos técnicos do procedimento de licenciamento. Clique em cada item para expandir os detalhes.</p>
-            <div class="w-full max-w-4xl mx-auto">
-                <div class="relative">
-                    <div class="border-l-4 border-dashed border-[#B49B5E] absolute h-full top-0 left-4"></div>
-                    <div id="process-flow" class="space-y-8">
-                        <div class="process-step pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#B49B5E] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold">1</div>
-                            <h4 class="text-xl font-semibold mb-2 text-[#0D4740]">Fases (LP, LI, LO)</h4>
-                            <p>O fluxo tradicional e suas condicionantes.</p>
-                            <div class="process-details bg-gray-50 p-4 rounded-md border border-gray-200 mt-2">
-                                <p><strong>Licença Prévia (LP):</strong> Atesta a viabilidade ambiental e estabelece requisitos básicos.</p>
-                                <p><strong>Licença de Instalação (LI):</strong> Autoriza a instalação do empreendimento conforme os projetos aprovados.</p>
-                                <p><strong>Licença de Operação (LO):</strong> Autoriza o início do funcionamento da atividade, após verificação.</p>
+        
+        <section id="curriculo" class="py-24 bg-slate-50 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-slate-900">Currículo do Curso (30h)</h2>
+                <p class="section-subtitle">Uma imersão completa e atualizada. Clique nos módulos para explorar o conteúdo detalhado.</p>
+                <div id="modules-accordion" class="mt-12 max-w-3xl mx-auto space-y-4">
+                    <!-- Módulo 1 -->
+                    <div class="card rounded-lg overflow-hidden border-slate-200">
+                        <div class="module-header p-5 flex justify-between items-center bg-white hover:bg-slate-50">
+                            <h3 class="text-lg font-bold text-blue-800">Módulo 1: Fundamentos Constitucionais e Teóricos (8h)</h3>
+                            <span class="module-arrow text-2xl text-blue-600 transform transition-transform">&#9662;</span>
+                        </div>
+                        <div class="module-content">
+                            <div class="p-5 border-t border-slate-200 text-slate-600">
+                                <ul class="list-disc list-inside space-y-2">
+                                    <li>O Direito Fundamental ao Meio Ambiente (Art. 225 CF) e seus Princípios.</li>
+                                    <li>Política Nacional do Meio Ambiente (Lei 6.938/81) e o SISNAMA.</li>
+                                    <li>Aprofundamento na Natureza Jurídica da Licença Ambiental: A Tese da Discricionariedade Técnica.</li>
+                                    <li>Análise das Resoluções CONAMA Essenciais (001/86 e 237/97).</li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="process-step pl-12 relative">
-                             <div class="absolute top-0 left-0 bg-[#B49B5E] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold">2</div>
-                            <h4 class="text-xl font-semibold mb-2 text-[#0D4740]">Modalidades</h4>
-                            <p>Além do trifásico, as outras formas de licenciamento.</p>
-                            <div class="process-details bg-gray-50 p-4 rounded-md border border-gray-200 mt-2">
-                                <p><strong>Licença Simplificada (LAS):</strong> Para atividades de pequeno potencial de impacto. Pode ser unificada ou com fases concomitantes.</p>
-                                <p><strong>Licença por Adesão e Compromisso (LAC):</strong> Ato declaratório para atividades de impacto conhecido e baixo.</p>
+                    </div>
+                    <!-- Módulo 2 -->
+                     <div class="card rounded-lg overflow-hidden border-slate-200">
+                        <div class="module-header p-5 flex justify-between items-center bg-white hover:bg-slate-50">
+                            <h3 class="text-lg font-bold text-blue-800">Módulo 2: O Processo na Prática e Estudos de Caso (10h)</h3>
+                            <span class="module-arrow text-2xl text-blue-600 transform transition-transform">&#9662;</span>
+                        </div>
+                        <div class="module-content">
+                            <div class="p-5 border-t border-slate-200 text-slate-600">
+                               <ul class="list-disc list-inside space-y-2">
+                                    <li>Etapas do Licenciamento (LP, LI, LO) e suas Condicionantes.</li>
+                                    <li>Estudo de Impacto Ambiental (EIA/RIMA): Metodologia e análise crítica.</li>
+                                    <li>Competências para Licenciar: A Lei Complementar nº 140/2011 na prática.</li>
+                                    <li>Responsabilidade Administrativa e Criminal no Licenciamento.</li>
+                                    <li>Análise Crítica de Casos Relevantes: Belo Monte, Brumadinho e Samarco.</li>
+                                </ul>
                             </div>
                         </div>
-                        <div class="process-step pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#B49B5E] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold">3</div>
-                            <h4 class="text-xl font-semibold mb-2 text-[#0D4740]">Estudos Ambientais</h4>
-                            <p>Os documentos técnicos que subsidiam a decisão.</p>
-                            <div class="process-details bg-gray-50 p-4 rounded-md border border-gray-200 mt-2">
-                                <p><strong>EIA/RIMA:</strong> Estudo e Relatório de Impacto Ambiental, para empreendimentos de significativo impacto.</p>
-                                <p><strong>RAS/RCA/PCA:</strong> Estudos simplificados como Relatório Ambiental Simplificado, Relatório e Plano de Controle Ambiental.</p>
+                    </div>
+                    <!-- Módulo 3 -->
+                    <div class="card rounded-lg overflow-hidden border-slate-200">
+                        <div class="module-header p-5 flex justify-between items-center bg-white hover:bg-slate-50">
+                            <h3 class="text-lg font-bold text-blue-800">Módulo 3: Novas Fronteiras Legislativas (8h)</h3>
+                            <span class="module-arrow text-2xl text-blue-600 transform transition-transform">&#9662;</span>
+                        </div>
+                        <div class="module-content">
+                            <div class="p-5 border-t border-slate-200 text-slate-600">
+                               <ul class="list-disc list-inside space-y-2">
+                                    <li>Análise Detalhada do PL da Lei Geral do Licenciamento (PL 2.159/2021).</li>
+                                    <li>O Licenciamento Autodeclaratório (LAC): Riscos e benefícios.</li>
+                                    <li>Impactos das propostas em Terras Indígenas e Unidades de Conservação.</li>
+                                    <li>A lacuna da Avaliação Ambiental Estratégica (AAE).</li>
+                                </ul>
                             </div>
                         </div>
-                         <div class="process-step pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#B49B5E] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold">4</div>
-                            <h4 class="text-xl font-semibold mb-2 text-[#0D4740]">Participação Pública</h4>
-                            <p>Audiências públicas e outras formas de participação social.</p>
-                            <div class="process-details bg-gray-50 p-4 rounded-md border border-gray-200 mt-2">
-                                <p><strong>Audiência Pública:</strong> Mecanismo de consulta para apresentar o RIMA à comunidade e colher críticas e sugestões. Sua obrigatoriedade e força vinculante.</p>
-                                <p><strong>Outras Formas:</strong> O papel do Ministério Público, Conselhos de Meio Ambiente e o acesso à informação.</p>
+                    </div>
+                    <!-- Módulo 4 -->
+                    <div class="card rounded-lg overflow-hidden border-slate-200">
+                        <div class="module-header p-5 flex justify-between items-center bg-white hover:bg-slate-50">
+                            <h3 class="text-lg font-bold text-blue-800">Módulo 4: Jurisprudência e Temas Avançados (4h)</h3>
+                            <span class="module-arrow text-2xl text-blue-600 transform transition-transform">&#9662;</span>
+                        </div>
+                        <div class="module-content">
+                            <div class="p-5 border-t border-slate-200 text-slate-600">
+                               <ul class="list-disc list-inside space-y-2">
+                                    <li>Decisões Recentes do STF e STJ (ADI 6808, competências, etc.).</li>
+                                    <li>O Princípio da Proibição do Retrocesso Ambiental no licenciamento.</li>
+                                    <li>Desafios Setoriais: Agronegócio, Energia e Mineração.</li>
+                                    <li>Perspectivas Futuras: Licenciamento e Mudanças Climáticas.</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -216,249 +171,195 @@
             </div>
         </section>
 
-        <section id="nova-lei" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 4: A 'Nova' Lei Geral (PL 2.159/2021)</h3>
-            <p class="section-subtitle">Painel crítico sobre o controverso projeto. Analisamos os pontos polêmicos, como o "autolicenciamento" e as dispensas, comparando as propostas com seus potenciais impactos socioambientais.</p>
-            <div class="card p-6 rounded-lg mb-12">
-                <div class="chart-container">
-                    <canvas id="plChart"></canvas>
-                </div>
-            </div>
-            <div class="grid md:grid-cols-2 gap-8">
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-xl mb-2 text-[#B49B5E]">Proposta: Autolicenciamento (LAC)</h4>
-                    <p class="text-gray-800">Generalização da Licença por Adesão e Compromisso, emitida automaticamente com base na declaração do empreendedor.</p>
-                </div>
-                 <div class="card p-6 rounded-lg border-red-200 bg-red-50">
-                    <h4 class="font-bold text-xl mb-2 text-red-800">Análise Crítica: Risco Elevado</h4>
-                    <p class="text-red-900">Inconstitucionalidade por violar a prevenção e o controle estatal. Risco de "licenciamento de papel", sem análise técnica prévia.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-xl mb-2 text-[#B49B5E]">Proposta: Dispensa de Licença</h4>
-                    <p class="text-gray-800">Extensa lista de atividades dispensadas, incluindo cultivo agrícola, pecuária extensiva e "melhoramento" de infraestrutura.</p>
-                </div>
-                <div class="card p-6 rounded-lg border-red-200 bg-red-50">
-                    <h4 class="font-bold text-xl mb-2 text-red-800">Análise Crítica: Retrocesso Ambiental</h4>
-                    <p class="text-red-900">Risco de degradação sem controle prévio e incentivo ao desmatamento. Termos vagos podem encobrir grandes ampliações.</p>
-                </div>
-            </div>
-        </section>
-        
-        <section id="jurisprudencia" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 5: Jurisprudência Estratégica</h3>
-            <p class="section-subtitle">Explore a linha do tempo interativa para entender os casos paradigmáticos do STF e do STJ que impactam o licenciamento. Clique para ver os detalhes.</p>
-            <div class="w-full max-w-4xl mx-auto">
-                <div class="relative">
-                    <div class="border-l-4 border-dashed border-[#B49B5E] absolute h-full top-0 left-4"></div>
-                     <div class="space-y-8">
-                        <div class="timeline-item pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#0D4740] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-4 ring-white">STF</div>
-                            <h4 class="text-lg font-semibold mb-1">ADI 6808 (2022)</h4>
-                            <p class="text-gray-500">Inconstitucionalidade da licença automática.</p>
-                            <div class="timeline-content mt-2 bg-gray-50 p-4 rounded-md border border-gray-200">
-                                <p><strong>Tese:</strong> O STF declarou inconstitucional a emissão automática de licenças, afirmando que o licenciamento não pode ser esvaziado de análise técnica prévia. Forte precedente contra o "autolicenciamento".</p>
-                            </div>
+        <section id="nova-lei" class="py-24 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-slate-900">A Nova Lei Geral em Debate</h2>
+                <p class="section-subtitle">Análise visual e crítica do controverso PL 2.159/2021, que propõe alterar drasticamente o licenciamento ambiental no Brasil. O gráfico ilustra a tensão entre a prometida celeridade e o risco ao controle preventivo.</p>
+                <div class="mt-12">
+                    <div class="card p-6 rounded-lg">
+                        <div class="chart-container">
+                            <canvas id="plChart"></canvas>
                         </div>
-                        <div class="timeline-item pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#0D4740] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-4 ring-white">STF</div>
-                            <h4 class="text-lg font-semibold mb-1">RE 1017365 (Marco Temporal)</h4>
-                            <p class="text-gray-500">Impacto do reconhecimento de terras indígenas.</p>
-                            <div class="timeline-content mt-2 bg-gray-50 p-4 rounded-md border border-gray-200">
-                                <p><strong>Tese:</strong> A derrubada da tese do marco temporal reforça a necessidade de consulta prévia, livre e informada (Convenção 169 da OIT) para licenciamentos que afetem terras indígenas, mesmo não demarcadas.</p>
-                            </div>
-                        </div>
-                        <div class="timeline-item pl-12 relative">
-                            <div class="absolute top-0 left-0 bg-[#0D4740] h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-4 ring-white">STJ</div>
-                            <h4 class="text-lg font-semibold mb-1">Responsabilidade Civil Objetiva</h4>
-                            <p class="text-gray-500">A licença não afasta o dever de reparar.</p>
-                            <div class="timeline-content mt-2 bg-gray-50 p-4 rounded-md border border-gray-200">
-                                <p><strong>Tese:</strong> Jurisprudência consolidada de que a responsabilidade por danos ambientais é objetiva (risco integral). A licença não é um salvo-conduto e não exime o empreendedor do dever de reparar integralmente o dano.</p>
-                            </div>
-                        </div>
-                     </div>
+                    </div>
+                </div>
+                <div class="mt-12 grid md:grid-cols-2 gap-8">
+                    <div class="card p-6 rounded-lg">
+                        <h4 class="font-bold text-xl mb-2 text-blue-800">Proposta: Autolicenciamento (LAC)</h4>
+                        <p class="text-slate-600">Generalização da Licença por Adesão e Compromisso, emitida automaticamente com base na declaração do empreendedor, sem análise prévia do órgão ambiental.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg border-l-4 border-amber-500">
+                        <h4 class="font-bold text-xl mb-2 text-amber-700">Análise Crítica: Risco Elevado</h4>
+                        <p class="text-slate-600">Potencial inconstitucionalidade por violar o princípio da prevenção e o controle estatal. Risco de "licenciamento de papel", sem análise técnica prévia dos impactos.</p>
+                    </div>
+                    <div class="card p-6 rounded-lg">
+                        <h4 class="font-bold text-xl mb-2 text-blue-800">Proposta: Dispensa de Licença</h4>
+                        <p class="text-slate-600">Extensa lista de atividades que ficariam isentas de licenciamento, incluindo cultivo agrícola, pecuária extensiva e "melhoramento" de infraestrutura.</p>
+                    </div>
+                     <div class="card p-6 rounded-lg border-l-4 border-amber-500">
+                        <h4 class="font-bold text-xl mb-2 text-amber-700">Análise Crítica: Retrocesso Ambiental</h4>
+                        <p class="text-slate-600">Risco de degradação sem controle e incentivo ao desmatamento. Termos vagos como "melhoramento" podem encobrir grandes ampliações sem a devida análise de impacto.</p>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="responsabilidade" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 6: A Tríplice Responsabilidade Ambiental</h3>
-            <p class="section-subtitle">Análise das esferas de responsabilização por infrações e danos ambientais, mesmo em atividades licenciadas.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Administrativa</h4>
-                    <p>Estudo das infrações e sanções previstas no Decreto nº 6.514/2008. Multas, embargos e o processo administrativo sancionador.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Civil</h4>
-                    <p>A responsabilidade objetiva, a obrigação de reparar o dano (in natura ou indenização) e a Ação Civil Pública como instrumento de tutela.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Penal</h4>
-                    <p>Análise dos tipos penais da Lei nº 9.605/98 (Lei de Crimes Ambientais) aplicáveis ao licenciamento e a responsabilidade da pessoa jurídica.</p>
+        <section id="jurisprudencia" class="py-24 bg-slate-50 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-title text-slate-900">Jurisprudência que Molda o Futuro</h2>
+                <p class="section-subtitle">Explore a linha do tempo interativa para entender as decisões paradigmáticas do STF e STJ que impactam diretamente o licenciamento ambiental no dia a dia. Clique em cada caso para ver os detalhes.</p>
+                <div class="mt-12 w-full max-w-2xl mx-auto">
+                    <div class="relative">
+                        <div class="border-l-2 border-blue-200 absolute h-full top-0 left-4"></div>
+                        <div class="space-y-12">
+                            <div class="timeline-item pl-12 relative">
+                                <div class="absolute top-1 left-0 bg-blue-600 h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-8 ring-slate-50">STF</div>
+                                <h4 class="text-lg font-bold mb-1">ADI 6808</h4>
+                                <p class="text-slate-500 text-sm font-medium">2022 | Inconstitucionalidade da licença automática</p>
+                                <div class="timeline-content mt-2 bg-white p-4 rounded-md border border-slate-200">
+                                    <p class="text-sm"><strong>Tese:</strong> O STF declarou inconstitucional a emissão automática de licenças para atividades de risco médio, afirmando que o licenciamento não pode ser esvaziado de análise técnica prévia. Forte precedente contra o "autolicenciamento".</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item pl-12 relative">
+                                <div class="absolute top-1 left-0 bg-blue-600 h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-8 ring-slate-50">STF</div>
+                                <h4 class="text-lg font-bold mb-1">ARE 1514669</h4>
+                                <p class="text-slate-500 text-sm font-medium">2024 | Competência de estados e municípios</p>
+                                <div class="timeline-content mt-2 bg-white p-4 rounded-md border border-slate-200">
+                                    <p class="text-sm"><strong>Tese:</strong> Estados e municípios podem editar normas para complementar a lista federal de atividades que exigem licenciamento, desde que seja para ampliar a proteção ambiental, reforçando o federalismo cooperativo.</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item pl-12 relative">
+                                <div class="absolute top-1 left-0 bg-blue-600 h-8 w-8 rounded-full flex items-center justify-center text-white font-bold ring-8 ring-slate-50">STJ</div>
+                                <h4 class="text-lg font-bold mb-1">Resp. Civil Objetiva (Risco Integral)</h4>
+                                <p class="text-slate-500 text-sm font-medium">Contínua | A licença não afasta o dever de reparar</p>
+                                <div class="timeline-content mt-2 bg-white p-4 rounded-md border border-slate-200">
+                                    <p class="text-sm"><strong>Tese:</strong> Jurisprudência consolidada de que a responsabilidade por danos ambientais é objetiva e integral. A licença não é um salvo-conduto e não exime o empreendedor do dever de reparar integralmente o dano causado.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <section id="especiais" class="mb-20 scroll-mt-24">
-            <h3 class="section-title">Módulo 7: Tópicos Especiais e Avançados</h3>
-            <p class="section-subtitle">Imersão em temas complexos e setoriais do licenciamento ambiental.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                 <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Setores Estratégicos</h4>
-                    <p>As peculiaridades do licenciamento para mineração, energia (hidrelétricas, eólicas, solar), agronegócio e infraestrutura.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Compensação Ambiental</h4>
-                    <p>O art. 36 da Lei do SNUC. Natureza jurídica, cálculo, destinação dos recursos e a jurisprudência do STF sobre o tema.</p>
-                </div>
-                <div class="card p-6 rounded-lg">
-                    <h4 class="font-bold text-lg mb-2 text-[#0D4740]">Pós-Licenciamento</h4>
-                    <p>O ciclo de vida da licença: monitoramento, auditoria, renovação, suspensão e cancelamento. Gestão ambiental contínua.</p>
+        <section id="inscricao" class="py-24 scroll-mt-20">
+            <div class="container mx-auto px-6">
+                <div class="bg-blue-700 rounded-lg p-12 text-center text-white shadow-2xl">
+                    <h2 class="text-3xl md:text-4xl font-extrabold">Eleve sua Qualificação Profissional</h2>
+                    <p class="mt-4 text-lg text-blue-100 max-w-2xl mx-auto">Invista em conhecimento estratégico e destaque-se no mercado com o curso de licenciamento ambiental mais completo e atualizado, conduzido por uma autoridade no assunto.</p>
+                    <div class="mt-8">
+                        <p class="font-bold">Investimento: Faixa de R$ 1.800 a R$ 3.000</p>
+                        <p class="text-sm text-blue-200">(Valor final a ser definido. Consulte condições de parcelamento e descontos).</p>
+                    </div>
+                    <a href="#" class="mt-8 inline-block bg-white text-blue-800 font-bold py-4 px-10 rounded-lg text-lg shadow-lg hover:bg-blue-50 transform hover:-translate-y-0.5 transition">
+                        Inscreva-se Agora
+                    </a>
                 </div>
             </div>
-        </section>
-
-        <section id="inscricao" class="bg-white rounded-lg p-12 shadow-lg text-center border">
-            <h3 class="text-3xl font-bold mb-4">Torne-se um Especialista de Destaque</h3>
-            <p class="text-lg text-gray-700 mb-8 max-w-2xl mx-auto">Aprofunde seus conhecimentos com o curso mais completo e atualizado do mercado, ministrado por uma das maiores autoridades em Direito Ambiental do Brasil.</p>
-            <a href="#" class="btn-primary font-bold py-4 px-8 rounded-lg text-lg">Quero me Inscrever Agora</a>
         </section>
     </main>
-    
-    <footer class="text-center py-8 border-t mt-12 text-gray-500">
-        <p>&copy; 2025 Curso Licenciamento Ambiental Avançado - Prof. Dr. Talden Farias. Todos os direitos reservados.</p>
+
+    <footer class="text-center py-8 border-t border-slate-200 mt-12">
+        <p class="text-sm text-slate-500">&copy; 2025 Curso Avançado em Licenciamento Ambiental. Todos os direitos reservados.</p>
     </footer>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const mobileMenuButton = document.getElementById('mobile-menu-button');
-            const mobileMenu = document.getElementById('mobile-menu');
-            
-            mobileMenuButton.addEventListener('click', () => {
-                mobileMenu.classList.toggle('hidden');
-            });
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+    });
 
-            const navLinks = document.querySelectorAll('.nav-link');
-            const sections = document.querySelectorAll('main section');
-
-            const observer = new IntersectionObserver((entries) => {
-                let visibleSectionId = null;
-                 entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        if (!visibleSectionId) {
-                            visibleSectionId = entry.target.id;
-                        }
-                    }
-                });
-
-                if(visibleSectionId) {
-                    navLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href').substring(1) === visibleSectionId) {
-                            link.classList.add('active');
-                        }
-                    });
-
-                    const mobileNavLinks = document.querySelectorAll('#mobile-menu .nav-link');
-                     mobileNavLinks.forEach(link => {
-                        link.classList.remove('active');
-                        if (link.getAttribute('href').substring(1) === visibleSectionId) {
-                            link.classList.add('active');
-                        }
-                    });
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                targetElement.scrollIntoView({ behavior: 'smooth' });
+                if (!mobileMenu.classList.contains('hidden')) {
+                    mobileMenu.classList.add('hidden');
                 }
-
-            }, { threshold: 0.2, rootMargin: "-100px 0px -50% 0px" });
-
-            sections.forEach(section => {
-                observer.observe(section);
-            });
-            
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    document.querySelector(this.getAttribute('href')).scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    if (mobileMenu.offsetParent !== null) {
-                       mobileMenu.classList.add('hidden');
-                    }
-                });
-            });
-
-            const interactiveItems = document.querySelectorAll('.process-step, .timeline-item');
-            interactiveItems.forEach(item => {
-                item.addEventListener('click', (e) => {
-                    e.currentTarget.classList.toggle('active');
-                    const content = e.currentTarget.querySelector('.process-details, .timeline-content');
-                    if (content.classList.contains('open')) {
-                        content.style.maxHeight = null;
-                        content.style.padding = '0';
-                        content.style.marginTop = '0';
-                        content.classList.remove('open');
-                    } else {
-                        content.classList.add('open');
-                        content.style.maxHeight = content.scrollHeight + "px";
-                        content.style.padding = '1rem';
-                        content.style.marginTop = '0.5rem';
-                    }
-                });
-            });
-
-            const ctx = document.getElementById('plChart').getContext('2d');
-            const plChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Autolicenciamento (LAC)', 'Dispensas Gerais', 'Limites às Condicionantes', 'Ataques a Direitos de Povos'],
-                    datasets: [{
-                        label: 'Promessa de Celeridade / Simplificação',
-                        data: [90, 85, 70, 60],
-                        backgroundColor: '#B49B5E',
-                        borderColor: '#A98B4F',
-                        borderWidth: 1
-                    }, {
-                        label: 'Percepção de Risco / Retrocesso Ambiental',
-                        data: [95, 90, 80, 100],
-                        backgroundColor: '#BF3B3B',
-                        borderColor: '#A92B2B',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            max: 100,
-                            title: {
-                                display: true,
-                                text: 'Nível de Impacto Percebido (0-100)'
-                            }
-                        }
-                    },
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: "PL 2.159/2021: Análise Comparativa de Celeridade vs. Risco",
-                            font: { size: 16 },
-                            padding: { bottom: 20 }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    let label = context.dataset.label || '';
-                                    if (label) { label += ': '; }
-                                    if (context.parsed.y !== null) { label += context.parsed.y + '%'; }
-                                    return label;
-                                }
-                            }
-                        }
-                    }
-                }
-            });
+            }
         });
-    </script>
+    });
 
+    const navLinks = document.querySelectorAll('.nav-link');
+    const sections = document.querySelectorAll('main section');
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href').substring(1) === entry.target.id);
+                });
+            }
+        });
+    }, { rootMargin: '-20% 0px -80% 0px' });
+    sections.forEach(section => observer.observe(section));
+
+    const accordionItems = document.querySelectorAll('.module-header');
+    accordionItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const content = item.nextElementSibling;
+            const arrow = item.querySelector('.module-arrow');
+            item.parentElement.classList.toggle('open');
+            arrow.classList.toggle('rotate-180');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        });
+    });
+
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    timelineItems.forEach(item => {
+        item.addEventListener('click', () => {
+            const content = item.querySelector('.timeline-content');
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+            } else {
+                content.style.maxHeight = content.scrollHeight + 'px';
+            }
+        });
+    });
+
+    const ctx = document.getElementById('plChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: ['Controle Prévio', 'Análise Técnica', 'Participação Social', 'Segurança Jurídica'],
+            datasets: [{
+                label: 'Sistema Atual (Teórico)',
+                data: [8, 9, 6, 7],
+                backgroundColor: 'rgba(59, 130, 246, 0.7)',
+                borderColor: 'rgba(59, 130, 246, 1)',
+                borderWidth: 1
+            }, {
+                label: 'Proposta PL 2.159/2021',
+                data: [3, 2, 3, 5],
+                backgroundColor: 'rgba(245, 158, 11, 0.7)',
+                borderColor: 'rgba(245, 158, 11, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    max: 10,
+                    title: { display: true, text: 'Nível de Efetividade (0-10)' }
+                }
+            },
+            plugins: {
+                title: { display: true, text: 'PL 2.159: Impacto Percebido nos Pilares do Licenciamento', font: { size: 16 }, padding: { bottom: 20 } },
+                tooltip: { mode: 'index', intersect: false }
+            }
+        }
+    });
+});
+</script>
 </body>
 </html>
